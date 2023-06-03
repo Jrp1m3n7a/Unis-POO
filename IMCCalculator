@@ -1,0 +1,77 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class IMCCalculator extends JFrame {
+    private JLabel weightLabel;
+    private JLabel heightLabel;
+    private JTextField weightField;
+    private JTextField heightField;
+    private JButton calculateButton;
+
+    public IMCCalculator() {
+        // Configurações básicas da janela
+        setTitle("Calculadora de IMC");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+
+        // Criação dos componentes da interface
+        weightLabel = new JLabel("Peso (Kg):");
+        weightField = new JTextField(10);
+        heightLabel = new JLabel("Altura (cm):");
+        heightField = new JTextField(10);
+        calculateButton = new JButton("Calcular");
+
+        // Adiciona os componentes à janela
+        add(weightLabel);
+        add(weightField);
+        add(heightLabel);
+        add(heightField);
+        add(calculateButton);
+
+        // Configura o evento de clique no botão
+        calculateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calculateIMC();
+            }
+        });
+    }
+
+    private void calculateIMC() {
+        // Obtém os valores de peso e altura fornecidos pelo usuário
+        double weight = Double.parseDouble(weightField.getText());
+        double height = Double.parseDouble(heightField.getText()) / 100; // Converte cm para metros
+
+        // Calcula o IMC
+        double imc = weight / (height * height);
+
+        // Classifica o IMC
+        String classification;
+        if (imc < 18.5) {
+            classification = "Abaixo do peso";
+        } else if (imc < 25) {
+            classification = "Peso normal";
+        } else if (imc < 30) {
+            classification = "Sobrepeso";
+        } else {
+            classification = "Obesidade";
+        }
+
+        // Exibe o resultado do IMC e a classificação em uma caixa de diálogo
+        JOptionPane.showMessageDialog(this, "Seu IMC é: " + imc + "\nClassificação: " + classification);
+    }
+
+    public static void main(String[] args) {
+        // Cria e exibe a janela
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                IMCCalculator calculator = new IMCCalculator();
+                calculator.pack();
+                calculator.setVisible(true);
+            }
+        });
+    }
+}
